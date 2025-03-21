@@ -10,37 +10,35 @@
   </Window.DataContext>
 
   <Grid>
-    <!-- Row and Column definitions for responsiveness -->
+    <!-- Row and Column definitions for responsive layout -->
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto"/>
-      <!-- For the buttons -->
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="*"/>
-      <!-- For the ListBox -->
-      <RowDefinition Height="Auto"/>
-      <!-- For the last button -->
     </Grid.RowDefinitions>
 
     <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="Auto"/>
       <ColumnDefinition Width="*"/>
-      <!-- For the TextBox and ListBox to expand -->
     </Grid.ColumnDefinitions>
 
-    <!-- Metal Ekleme -->
-    <Button Content="Yeni Metal Ekle" Command="{Binding AddMetalCommand}" HorizontalAlignment="Stretch" VerticalAlignment="Top" Width="150" Height="40" Margin="10" Grid.Row="0" Grid.ColumnSpan="2"/>
+    <!-- Add Metal Button -->
+    <Button Content="Yeni Metal Ekle" Command="{Binding AddMetalCommand}"
+            HorizontalAlignment="Stretch" VerticalAlignment="Top"
+            Width="150" Height="40" Margin="10" Grid.Row="0" Grid.Column="0"/>
 
-    <!-- Kullanılacak Metal Uzunluğunu Girme -->
-    <TextBox Text="{Binding LengthToUse}" HorizontalAlignment="Stretch" VerticalAlignment="Top" Width="200" Margin="10,10,10,10" Grid.Row="1" Grid.Column="1"/>
+    <!-- Length to Use TextBox -->
+    <TextBox Text="{Binding LengthToUse}" HorizontalAlignment="Stretch"
+             VerticalAlignment="Top" Width="200" Margin="10" Grid.Row="1" Grid.Column="0"/>
 
-    <!-- Metal Kullanma Butonu -->
-    <Button Content="Metal Kullan" Command="{Binding UseMetalCommand}" HorizontalAlignment="Stretch" VerticalAlignment="Top" Width="150" Height="40" Margin="10" Grid.Row="2" Grid.ColumnSpan="2"/>
+    <!-- Use Metal Button -->
+    <Button Content="Metal Kullan" Command="{Binding UseMetalCommand}"
+            HorizontalAlignment="Stretch" VerticalAlignment="Top"
+            Width="150" Height="40" Margin="10" Grid.Row="2" Grid.Column="0"/>
 
-    <!-- Kalan Metaller Listesi -->
-    <ListBox ItemsSource="{Binding RemainingParts}" DisplayMemberPath="RemainingLength" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="10" Grid.Row="3" Grid.Column="1"/>
-
-    <!-- Kalan Metal Parçalarını Kullanma -->
-    <Button Content="Kalan Metal Kullan" HorizontalAlignment="Stretch" VerticalAlignment="Top" Width="150" Height="40" Margin="10" Grid.Row="4" Grid.ColumnSpan="2"/>
+    <!-- Remaining Metals List -->
+    <ListBox ItemsSource="{Binding RemainingParts}" DisplayMemberPath="RemainingLength"
+             HorizontalAlignment="Stretch" VerticalAlignment="Top"
+             Width="200" Height="200" Margin="10" Grid.Row="3" Grid.Column="0"/>
   </Grid>
 </Window>

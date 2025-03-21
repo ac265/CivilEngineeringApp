@@ -1,5 +1,3 @@
-ï»¿using CivilEngineeringProject.Model;
-using Newtonsoft.Json;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -7,17 +5,20 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using Newtonsoft.Json;
+using CivilEngineeringProject.Model;
 
 namespace CivilEngineeringProject.ViewModel
 {
     public class MetalViewModel : INotifyPropertyChanged
     {
-        private const string FilePath = "metals.json"; // Path for the JSON file
+        private const string FilePath = "metals.json";  // File path for saving metals data
+        public ObservableCollection<Metal> Metals { get; set; } = new ObservableCollection<Metal>();
+        public ObservableCollection<Metal> RemainingParts { get; set; } = new ObservableCollection<Metal>();
 
-        public ObservableCollection<Metal> Metals { get; set; }  // Metal collection
-        public ObservableCollection<Metal> UsedMetals { get; set; } // Used metals collection
-        public ObservableCollection<Metal> RemainingParts { get; set; } // Remaining parts collection
-        // Ensure PropertyChanged for LengthToUse to notify UI and command reevaluation
+        public ICommand AddMetalCommand { get; set; }
+        public ICommand UseRemainingMetalCommand { get; set; }
+
         private double _lengthToUse;
         public double LengthToUse
         {
@@ -33,37 +34,30 @@ namespace CivilEngineeringProject.ViewModel
                 }
             }
         }
-        public ICommand AddMetalCommand { get; set; } // Command to add metal
-        public ICommand UseMetalCommand { get; set; } // Command to use metal
 
         public MetalViewModel()
         {
-            Metals = new ObservableCollection<Metal>();
-            UsedMetals = new ObservableCollection<Metal>();
-            RemainingParts = new ObservableCollection<Metal>();
             AddMetalCommand = new RelayCommand(AddMetal);
-            UseMetalCommand = new RelayCommand(UseMetal, CanUseMetal);
-
-            // Listen to PropertyChanged to trigger command reevaluation when LengthToUse changes
-            PropertyChanged += (sender, args) =>
-            {
-                if (args.PropertyName == nameof(LengthToUse))
-                {
-                    CommandManager.InvalidateRequerySuggested();  // Forces CanExecute to be rechecked
-                }
-            };
-
-            LoadData(); // Load saved data from file
+            UseRemainingMetalCommand = new RelayCommand(UseRemainingMetal, CanUseMetal);
+            LoadData();
         }
 
-        // Method to check if metal can be used based on remaining lengths
-        public bool CanUseMetal()
+        // Method to add new metal (12 meters by default)
+        public void AddMetal()
         {
-            return RemainingParts.Any(m => m.RemainingLength >= LengthToUse);
+            // Yeni bir metal nesnesi oluþturuyoruz
+            var newMetal = new Metal { InitialLength = 12, UsedLength = 0 };
+
+            // Yeni metali Metals koleksiyonuna ekliyoruz
+            Metals.Add(newMetal);
+            RemainingParts.Add(newMetal); // Kalan metali de RemainingParts listesine ekliyoruz
+
+            // Veriyi kaydediyoruz
+            SaveData();
         }
 
-        // Method to use metal
-        public void UseMetal()
+        // Method to use remaining metal from the collection
+        public void UseRemainingMetal()
         {
             if (LengthToUse <= 0)
             {
@@ -93,7 +87,7 @@ namespace CivilEngineeringProject.ViewModel
                     }
                 }
 
-                SaveData(); // Save data to file after use
+                SaveData();  // Save data to file after use
             }
             else
             {
@@ -101,26 +95,34 @@ namespace CivilEngineeringProject.ViewModel
             }
         }
 
-        // Add new metal of 12 meters
-        public void AddMetal()
+        // Method to check if metal can be used based on remaining lengths
+        public bool CanUseMetal()
         {
-            var newMetal = new Metal { InitialLength = 12 };  // Default length of new metal is 12 meters
-            Metals.Add(newMetal);
-
-            // Add to remaining parts as well
-            RemainingParts.Add(new Metal { InitialLength = newMetal.InitialLength });
-
-            SaveData(); // Save data after adding new metal
+            return RemainingParts.Any(m => m.RemainingLength >= LengthToUse);
         }
 
-        // Load saved data from JSON file
+        // Save data to JSON
+        // Save data to JSON
+        public void SaveData()
+        {
+            try
+            {
+                var json = JsonConvert.SerializeObject(Metals, Formatting.Indented);
+                File.WriteAllText(FilePath, json);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Veri kaydedilirken bir hata oluþtu: {ex.Message}", "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        // Load data from JSON
         private void LoadData()
         {
             if (File.Exists(FilePath))
             {
                 var json = File.ReadAllText(FilePath);
                 var metalsList = JsonConvert.DeserializeObject<ObservableCollection<Metal>>(json);
-
                 if (metalsList != null)
                 {
                     Metals.Clear();
@@ -128,45 +130,18 @@ namespace CivilEngineeringProject.ViewModel
 
                     foreach (var metal in metalsList)
                     {
-                        if (metal.InitialLength > 0)
+                        Metals.Add(metal);
+                        if (metal.RemainingLength > 0)
                         {
-                            Metals.Add(metal);
-
-                            if (metal.RemainingLength > 0)
-                            {
-                                RemainingParts.Add(new Metal { InitialLength = metal.RemainingLength });
-                            }
+                            RemainingParts.Add(metal);
                         }
                     }
                 }
             }
-            else
-            {
-                // Create an empty file if none exists
-                File.WriteAllText(FilePath, "[]");
-            }
-        }
-
-        // Save the current state of metals to JSON file
-        private void SaveData()
-        {
-            try
-            {
-                var allMetals = Metals.Concat(RemainingParts).ToList();
-                var json = JsonConvert.SerializeObject(allMetals);
-
-                File.WriteAllText(FilePath, json); // Write to the file
-
-                // Debug: Output to console
-                Console.WriteLine("Data saved: " + json);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error saving file: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
         protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

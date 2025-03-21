@@ -35,6 +35,12 @@ C:\Users\aayse\Source\repos\SchoolManagementSystem\CivilEngineeringProject\Civil
 C:\Users\aayse\Source\repos\SchoolManagementSystem\CivilEngineeringProject\CivilEngineeringProject\bin\Debug\ru\Xceed.Wpf.AvalonDock.resources.dll
 C:\Users\aayse\Source\repos\SchoolManagementSystem\CivilEngineeringProject\CivilEngineeringProject\bin\Debug\sv\Xceed.Wpf.AvalonDock.resources.dll
 C:\Users\aayse\Source\repos\SchoolManagementSystem\CivilEngineeringProject\CivilEngineeringProject\bin\Debug\zh-Hans\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\aayse\Source\repos\CivilEngineeringApp\CivilEngineeringProject\CivilEngineeringProject\obj\Debug\CivilEngineeringProject.csproj.AssemblyReference.cache
+C:\Users\aayse\Source\repos\CivilEngineeringApp\CivilEngineeringProject\CivilEngineeringProject\obj\Debug\MainWindow.g.cs
+C:\Users\aayse\Source\repos\CivilEngineeringApp\CivilEngineeringProject\CivilEngineeringProject\obj\Debug\App.g.cs
+C:\Users\aayse\Source\repos\CivilEngineeringApp\CivilEngineeringProject\CivilEngineeringProject\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\aayse\Source\repos\CivilEngineeringApp\CivilEngineeringProject\CivilEngineeringProject\obj\Debug\CivilEngineeringProject_MarkupCompile.cache
+C:\Users\aayse\Source\repos\CivilEngineeringApp\CivilEngineeringProject\CivilEngineeringProject\obj\Debug\CivilEngineeringProject_MarkupCompile.lref
 C:\Users\aayse\Source\repos\CivilEngineeringApp\CivilEngineeringProject\CivilEngineeringProject\bin\Debug\CivilEngineeringProject.exe.config
 C:\Users\aayse\Source\repos\CivilEngineeringApp\CivilEngineeringProject\CivilEngineeringProject\bin\Debug\CivilEngineeringProject.exe
 C:\Users\aayse\Source\repos\CivilEngineeringApp\CivilEngineeringProject\CivilEngineeringProject\bin\Debug\CivilEngineeringProject.pdb
@@ -58,12 +64,6 @@ C:\Users\aayse\Source\repos\CivilEngineeringApp\CivilEngineeringProject\CivilEng
 C:\Users\aayse\Source\repos\CivilEngineeringApp\CivilEngineeringProject\CivilEngineeringProject\bin\Debug\ru\Xceed.Wpf.AvalonDock.resources.dll
 C:\Users\aayse\Source\repos\CivilEngineeringApp\CivilEngineeringProject\CivilEngineeringProject\bin\Debug\sv\Xceed.Wpf.AvalonDock.resources.dll
 C:\Users\aayse\Source\repos\CivilEngineeringApp\CivilEngineeringProject\CivilEngineeringProject\bin\Debug\zh-Hans\Xceed.Wpf.AvalonDock.resources.dll
-C:\Users\aayse\Source\repos\CivilEngineeringApp\CivilEngineeringProject\CivilEngineeringProject\obj\Debug\CivilEngineeringProject.csproj.AssemblyReference.cache
-C:\Users\aayse\Source\repos\CivilEngineeringApp\CivilEngineeringProject\CivilEngineeringProject\obj\Debug\MainWindow.g.cs
-C:\Users\aayse\Source\repos\CivilEngineeringApp\CivilEngineeringProject\CivilEngineeringProject\obj\Debug\App.g.cs
-C:\Users\aayse\Source\repos\CivilEngineeringApp\CivilEngineeringProject\CivilEngineeringProject\obj\Debug\GeneratedInternalTypeHelper.g.cs
-C:\Users\aayse\Source\repos\CivilEngineeringApp\CivilEngineeringProject\CivilEngineeringProject\obj\Debug\CivilEngineeringProject_MarkupCompile.cache
-C:\Users\aayse\Source\repos\CivilEngineeringApp\CivilEngineeringProject\CivilEngineeringProject\obj\Debug\CivilEngineeringProject_MarkupCompile.lref
 C:\Users\aayse\Source\repos\CivilEngineeringApp\CivilEngineeringProject\CivilEngineeringProject\obj\Debug\MainWindow.baml
 C:\Users\aayse\Source\repos\CivilEngineeringApp\CivilEngineeringProject\CivilEngineeringProject\obj\Debug\CivilEngineeringProject.g.resources
 C:\Users\aayse\Source\repos\CivilEngineeringApp\CivilEngineeringProject\CivilEngineeringProject\obj\Debug\CivilEngineeringProject.Properties.Resources.resources

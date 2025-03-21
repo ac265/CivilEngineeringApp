@@ -1,5 +1,11 @@
-﻿using System;
+using System;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.IO;
+using System.Linq;
+using System.Windows;
 using System.Windows.Input;
+using Newtonsoft.Json;
 
 namespace CivilEngineeringProject.ViewModel
 {
@@ -8,9 +14,13 @@ namespace CivilEngineeringProject.ViewModel
         private readonly Action _execute;
         private readonly Func<bool> _canExecute;
 
-        public RelayCommand(Action execute, Func<bool> canExecute = null)
+        public RelayCommand(Action execute) : this(execute, null)
         {
-            _execute = execute;
+        }
+
+        public RelayCommand(Action execute, Func<bool> canExecute)
+        {
+            _execute = execute ?? throw new ArgumentNullException(nameof(execute));
             _canExecute = canExecute;
         }
 
