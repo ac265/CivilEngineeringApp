@@ -17,7 +17,7 @@ namespace CivilEngineeringProject.ViewModel
         public ObservableCollection<Metal> RemainingParts { get; set; } = new ObservableCollection<Metal>();
 
         public ICommand AddMetalCommand { get; set; }
-        public ICommand UseRemainingMetalCommand { get; set; }
+        public ICommand UseMetalCommand { get; set; }
 
         private double _lengthToUse;
         public double LengthToUse
@@ -38,7 +38,7 @@ namespace CivilEngineeringProject.ViewModel
         public MetalViewModel()
         {
             AddMetalCommand = new RelayCommand(AddMetal);
-            UseRemainingMetalCommand = new RelayCommand(UseRemainingMetal, CanUseMetal);
+            UseMetalCommand = new RelayCommand(UseRemainingMetal, CanUseMetal);
             LoadData();
         }
 
@@ -56,42 +56,26 @@ namespace CivilEngineeringProject.ViewModel
             SaveData();
         }
 
-        // Method to use remaining metal from the collection
+        // Kalan metal kullaným iþlemi
         public void UseRemainingMetal()
         {
-            if (LengthToUse <= 0)
+            var metalToUse = RemainingParts.FirstOrDefault(m => m.RemainingLength >= LengthToUse);
+            if (metalToUse != null)
             {
-                MessageBox.Show("Please enter a valid length.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
+                metalToUse.UseMetal(LengthToUse); // Metalin uzunluðunu azalt
 
-            var availableMetal = RemainingParts.FirstOrDefault(m => m.RemainingLength >= LengthToUse);
-
-            if (availableMetal != null)
-            {
-                availableMetal.UseMetal(LengthToUse);
-
-                // If metal is used up (remaining length is 0), remove it from the list
-                if (availableMetal.RemainingLength == 0)
+                // Eðer metalin kalan uzunluðu sýfýrsa, metal listesinden çýkar
+                if (metalToUse.RemainingLength == 0)
                 {
-                    RemainingParts.Remove(availableMetal);
-                }
-                else
-                {
-                    // Otherwise, add the remaining part to the list
-                    var remainingPart = new Metal { InitialLength = availableMetal.RemainingLength };
-
-                    if (!RemainingParts.Any(m => m.RemainingLength == remainingPart.RemainingLength))
-                    {
-                        RemainingParts.Add(remainingPart);
-                    }
+                    RemainingParts.Remove(metalToUse);
                 }
 
-                SaveData();  // Save data to file after use
+                // Veriyi kaydet
+                SaveData();
             }
             else
             {
-                MessageBox.Show("Not enough metal available!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Yeterli metal bulunamadý!", "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
