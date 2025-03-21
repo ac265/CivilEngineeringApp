@@ -57,12 +57,19 @@ namespace CivilEngineeringProject.ViewModel
         }
 
         // Kalan metal kullaným iþlemi
+        // Kalan metal kullaným iþlemi
         public void UseRemainingMetal()
         {
-            var metalToUse = RemainingParts.FirstOrDefault(m => m.RemainingLength >= LengthToUse);
+            // Kalan metaller küçükten büyüðe sýralanýr
+            var metalToUse = RemainingParts
+                .Where(m => m.RemainingLength >= LengthToUse) // Yalnýzca yeterli uzunluða sahip metaller
+                .OrderBy(m => m.RemainingLength) // Küçükten büyüðe sýralama
+                .FirstOrDefault(); // Ýlk uygun metal seçilir
+
             if (metalToUse != null)
             {
-                metalToUse.UseMetal(LengthToUse); // Metalin uzunluðunu azalt
+                // Seçilen metal kullanýlýr
+                metalToUse.UseMetal(LengthToUse);
 
                 // Eðer metalin kalan uzunluðu sýfýrsa, metal listesinden çýkar
                 if (metalToUse.RemainingLength == 0)
