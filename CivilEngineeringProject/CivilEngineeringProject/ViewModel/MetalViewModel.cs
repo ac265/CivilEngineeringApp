@@ -13,8 +13,26 @@ namespace CivilEngineeringProject.ViewModel
     public class MetalViewModel : INotifyPropertyChanged
     {
         private const string FilePath = "metals.json";  // File path for saving metals data
-        public ObservableCollection<Metal> Metals { get; set; } = new ObservableCollection<Metal>();
         public ObservableCollection<Metal> RemainingParts { get; set; } = new ObservableCollection<Metal>();
+        public ObservableCollection<Metal> UsedParts { get; set; } = new ObservableCollection<Metal>();
+
+        private ObservableCollection<Metal> _metals = new ObservableCollection<Metal>();
+
+        public ObservableCollection<Metal> Metals
+        {
+            get { return _metals; }
+            set
+            {
+                if (_metals != value)
+                {
+                    _metals = value;
+                    OnPropertyChanged(nameof(Metals));
+                    OnPropertyChanged(nameof(RemainingUnusedPartsCount));
+                    OnPropertyChanged(nameof(RemainingUnusedPartsTotalLength));
+                }
+            }
+        }
+
         private int _metalCount = 1;
 
         public int MetalCount
@@ -27,6 +45,37 @@ namespace CivilEngineeringProject.ViewModel
                     _metalCount = value;
                     OnPropertyChanged(nameof(MetalCount)); // Burada property adý 'MetalCount' olmalý
                 }
+            }
+        }
+
+        // JSON'dan alýnan verilerde kullanýlmayan metallerin sayýsýný döndüren özellik
+        public int RemainingUnusedPartsCount
+        {
+            get
+            {
+                return Metals.Count(m => m.RemainingLength > 0);
+            }
+            set
+            {
+                // Eðer set metodu ile deðiþiklik yapýlýrsa, burada koleksiyona müdahale edebiliriz.
+                // Ancak, genellikle hesaplanan deðerler dýþarýdan set edilmez, burada sadece örnek gösterilmektedir.
+                // Bu þekilde, sayýyý deðiþtirerek koleksiyonu güncelleyebilirsiniz.
+                OnPropertyChanged(nameof(RemainingUnusedPartsCount));
+            }
+        }
+
+        // JSON'dan alýnan verilerdeki kullanýlmayan metallerin toplam uzunluðunu döndüren özellik
+        public double RemainingUnusedPartsTotalLength
+        {
+            get
+            {
+                return Metals.Where(m => m.RemainingLength > 0).Sum(m => m.RemainingLength);
+            }
+            set
+            {
+                // Burada da, total length deðeri deðiþirse, koleksiyondaki metallerin RemainingLength deðeri
+                // güncellenebilir. Ancak genellikle bu tarz veriler, doðrudan dýþarýdan set edilmez.
+                OnPropertyChanged(nameof(RemainingUnusedPartsTotalLength));
             }
         }
 
@@ -73,6 +122,10 @@ namespace CivilEngineeringProject.ViewModel
                 RemainingParts.Add(newMetal);
             }
 
+            // Yeni eklenen metal sonrasý her iki hesaplanan deðeri güncelleyerek UI'yi yeniden tetikliyoruz
+            OnPropertyChanged(nameof(RemainingUnusedPartsCount));
+            OnPropertyChanged(nameof(RemainingUnusedPartsTotalLength));
+
             // Veriyi kaydediyoruz
             SaveData();
         }
@@ -98,8 +151,15 @@ namespace CivilEngineeringProject.ViewModel
                     RemainingParts.Remove(metalToUse);
                 }
 
+                // Metalin kullanýlmýþ halini UsedParts listesine ekliyoruz
+                UsedParts.Add(metalToUse);  // Kullanýlan metal eklenir
                 // Veriyi kaydet
                 SaveData();
+
+                // Verileri güncelle
+                OnPropertyChanged(nameof(RemainingUnusedPartsCount)); // Kalan metal sayýsý güncellenmeli
+                OnPropertyChanged(nameof(RemainingUnusedPartsTotalLength)); // Kalan metal uzunluðu güncellenmeli
+
             }
             else
             {
@@ -150,6 +210,10 @@ namespace CivilEngineeringProject.ViewModel
                     }
                 }
             }
+
+            // Veri yüklendikten sonra RemainingPartsCount ve RemainingPartsTotalLength'i güncelle
+            OnPropertyChanged(nameof(RemainingUnusedPartsCount));
+            OnPropertyChanged(nameof(RemainingUnusedPartsTotalLength));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
