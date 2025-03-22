@@ -15,6 +15,20 @@ namespace CivilEngineeringProject.ViewModel
         private const string FilePath = "metals.json";  // File path for saving metals data
         public ObservableCollection<Metal> Metals { get; set; } = new ObservableCollection<Metal>();
         public ObservableCollection<Metal> RemainingParts { get; set; } = new ObservableCollection<Metal>();
+        private int _metalCount = 1;
+
+        public int MetalCount
+        {
+            get { return _metalCount; }
+            set
+            {
+                if (_metalCount != value) // Deðer deðiþtiðinde
+                {
+                    _metalCount = value;
+                    OnPropertyChanged(nameof(MetalCount)); // Burada property adý 'MetalCount' olmalý
+                }
+            }
+        }
 
         public ICommand AddMetalCommand { get; set; }
         public ICommand UseMetalCommand { get; set; }
@@ -39,18 +53,25 @@ namespace CivilEngineeringProject.ViewModel
         {
             AddMetalCommand = new RelayCommand(AddMetal);
             UseMetalCommand = new RelayCommand(UseRemainingMetal, CanUseMetal);
+
             LoadData();
         }
 
         // Method to add new metal (12 meters by default)
         public void AddMetal()
         {
-            // Yeni bir metal nesnesi oluþturuyoruz
-            var newMetal = new Metal { InitialLength = 12, UsedLength = 0 };
+            // MetalCount deðerine göre metal ekliyoruz
+            for (int i = 0; i < MetalCount; i++)
+            {
+                // Yeni bir metal nesnesi oluþturuyoruz
+                var newMetal = new Metal { InitialLength = 12, UsedLength = 0 };
 
-            // Yeni metali Metals koleksiyonuna ekliyoruz
-            Metals.Add(newMetal);
-            RemainingParts.Add(newMetal); // Kalan metali de RemainingParts listesine ekliyoruz
+                // Yeni metali Metals koleksiyonuna ekliyoruz
+                Metals.Add(newMetal);
+
+                // Kalan metali RemainingParts listesine ekliyoruz
+                RemainingParts.Add(newMetal);
+            }
 
             // Veriyi kaydediyoruz
             SaveData();
